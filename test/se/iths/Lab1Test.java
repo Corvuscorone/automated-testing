@@ -5,8 +5,6 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.lang.ArithmeticException;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -14,7 +12,6 @@ import org.junit.experimental.categories.Category;
 public class Lab1Test {
 	
 	protected Lab1 lab1 = new Lab1();
-	static int counter = 0;
 	static ArrayList<String> quotes = new ArrayList<String>();
 	
 	@BeforeClass
@@ -30,36 +27,28 @@ public class Lab1Test {
 		quotes.add("I love deadlines. I like the whooshing sound they make as they fly by. - Douglas Adams");
     }
 	
-//	@After
-//	public void after(){
-//		counter++;
-//	}
 
 	@Test
 	@Category(MathTest.class)
 	public void testAdd(){
-		counter++;
 		assertEquals(lab1.add(1,2), 3);
 	}
 	
 	@Test
 	@Category(MathTest.class)
 	public void testSubtract(){
-		counter++;
 		assertEquals(lab1.subtract(3, 2), 1);
 	}
 
 	@Test
 	@Category(MathTest.class)
 	public void testMultiply(){
-		counter++;
 		assertEquals(lab1.multiply(3, 2), 6);
 	}
 	
 	@Test
 	@Category(MathTest.class)
 	public void testMultiplyNegative(){
-		counter++;
 		assertEquals(lab1.multiply(3, -2), -6);
 	}
 	
@@ -67,71 +56,65 @@ public class Lab1Test {
 	@Category(MathTest.class)
 	public void testMultiplyDoubleNegative(){
 		assertEquals(lab1.multiply(-3, -2), 6);
-		counter++;
 	}
 	
 	@Test
 	@Category(MathTest.class)
 	public void testDivide(){
 		assertEquals(lab1.divide(6, 2), 3);
-		counter++;
 	}
 	
 	@Test
 	@Category(MathTest.class)
 	public void testDivideNegative(){
 		assertEquals(lab1.divide(6, -2), -3);
-		counter++;
 	}
 	
 	@Test(expected = ArithmeticException.class)
 	@Category(MathTest.class)
 	public void testDivideByZero(){
-		counter++;
 		lab1.divide(2, 0);
 	}
 	
 	@Test
 	public void testReverse(){
-		counter++;
 		assertEquals(lab1.reverse("Hello World!"), "!dlroW olleH");
 	}
 	
 	@Test
-	public void reverseEmpty(){
-		counter++;
+	public void testReverseEmpty(){
 		assertEquals(lab1.reverse(""), "");
 	}
 	
 	@Test
 	public void testQuoteContains(){
-		counter++;
 		assertTrue(quotes.contains(lab1.quote()));
 	}
 	
 	@Test
 	public void testQuoteNotContains(){
-		counter++;
 		assertFalse(!quotes.contains(lab1.quote()));
 	}
 	
 	@Test
 	public void testQuoteAppears(){
-		while(!quotes.isEmpty()){
-			counter++;
-			quotes.remove(lab1.quote());
+		ArrayList<String> quotesCopy = new ArrayList<String>(quotes);
+		while(!quotesCopy.isEmpty()){
+			String s = lab1.quote();
+			quotesCopy.remove(s);
 		}
-		//counter--; //Compensating for the @After addition to counter
-		assertEquals(quotes.size(), 0);
+		assertEquals(quotesCopy.size(), 0);
 	}
 	
 	@Test
 	public void testGetCounter(){
-		int oldCounter = counter;
-		counter = 0;
-		testAdd();
-		testSubtract();
-		testMultiply();
-		assertEquals(lab1.getCounter(), counter+oldCounter);
+		int oldCounter = lab1.getCounter();
+		lab1.add(1, 2);
+		lab1.divide(10, 2);
+		lab1.multiply(3, 3);
+		lab1.subtract(10, 2);
+		lab1.reverse("hej");
+		lab1.quote();
+		assertEquals(lab1.getCounter(), oldCounter+6);
 	}
 }
