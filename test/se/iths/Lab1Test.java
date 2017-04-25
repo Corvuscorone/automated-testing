@@ -91,12 +91,7 @@ public class Lab1Test {
 		assertTrue(quotes.contains(lab1.quote()));
 	}
 	
-	@Test
-	public void testQuoteNotContains(){
-		assertFalse(!quotes.contains(lab1.quote()));
-	}
-	
-	@Test
+	@Test(timeout = 100000)
 	public void testQuoteAppears(){
 		ArrayList<String> quotesCopy = new ArrayList<String>(quotes);
 		while(!quotesCopy.isEmpty()){
